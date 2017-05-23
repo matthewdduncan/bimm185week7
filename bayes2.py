@@ -1,8 +1,4 @@
-
-#ECK[0-9]+\t\t\t[^\t\n]
-'''
-IDEA:  negative is ALL GENES, easy stuff, just go down the list.  or just do the same and subtract out those on same operon at the end.  numbers will be there.
-'''
+##note that certain input files were modified very slightly to prevent major outliers generated from bad data
 
 import matplotlib.pyplot as plt
 import numpy
@@ -73,13 +69,11 @@ for op in operonsf:
 		prevg = g
 	
 		
-##print(opdist[:10])
-		
+#sort distance lists		
 opdist.sort()
 ndist.sort()
 
-#create and popluate a distance list outside of operons
-
+#Plot density functions for both hypotheses
 axes = plt.gca()
 axes.set_xlim([-400,1000])
 
@@ -98,6 +92,7 @@ plt.savefig('KDE.png')
 
 plt.close('all')
 
+#evaluates the likelyhood of h1, given both density functions, the distance, and the p(h1)
 def evaluateit(d1, d2, dist, factor):
 	return (d2.evaluate(dist)*factor)/(d2.evaluate(dist)*factor + d1.evaluate(dist)*(1-factor))
 
@@ -105,6 +100,7 @@ fr = .6
 info = []
 info2 = []
 
+#calculates bayesian model for all adjacent genes, then plots it and writes it to a file
 with open('finalout.txt', 'w') as finalout:	
 	pastgene = ''
 	for gene in slgenes:
